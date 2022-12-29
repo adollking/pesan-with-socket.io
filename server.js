@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const PORT = 3000 || process.env.PORT;
 const io = socketio(server);
-// const options= {
+// const optionsSSL= {
 //     key: fs.readFileSync("srv/www/key/my-site.pem")
 //     cert: fs.readFileSync("srv/www/key/chain.pem")
     
@@ -43,25 +43,5 @@ io.on('connection' , socket => {
     })
 })
 
-app.get('/',(req,res) => {
-    res.writeHead(200);
-    res.json({hello : "world"});
-});
-
-
-app.get('/getdata',(req,res,next) => {
-    const fileStream = fs.createReadStream(
-        `${__dirname}/data/sample-data.csv`,
-    );
-    fileStream.on('open',() => {
-        //res.attachment('streamed-sample-data.csv');
-        fileStream.pipe(res);
-    });
-    fileStream.on('error',() => {
-        next(err);
-    });
-    
-    
-})
 
 server.listen(PORT,() =>  console.log(`Server listen on port ${PORT}`));
